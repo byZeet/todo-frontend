@@ -1,0 +1,98 @@
+.task-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .task-input {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  
+  .task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .task-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .task-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .completed {
+    text-decoration: line-through;
+    color: #aaa;
+  }
+  
+  button {
+    margin-left: auto;
+  }
+  
+  mat-checkbox {
+    margin-right: 12px;
+  }
+  
+  mat-form-field {
+    flex: 1;
+  }
+  
+  mat-card {
+    margin-bottom: 16px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  mat-card-header {
+    background-color: #6200ea;
+    color: white;
+    border-radius: 16px 16px 0 0;
+    padding: 16px;
+  }
+  
+  mat-card-title {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  mat-form-field {
+    border-radius: 12px;
+    width: 100%;
+  }
+  
+  mat-icon {
+    font-size: 24px;
+    color: #6200ea;
+  }
+  
+  button mat-icon-button {
+    background-color: #e1bee7;
+    border-radius: 50%;
+    padding: 8px;
+  }
+  
+  button mat-icon-button:hover {
+    background-color: #ba68c8;
+  }
+  

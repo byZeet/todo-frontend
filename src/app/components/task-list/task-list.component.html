@@ -1,0 +1,45 @@
+<div class="task-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>📌 Lista de Tareas</mat-card-title>
+    </mat-card-header>
+
+    <!-- Input para nueva tarea -->
+    <mat-card-content>
+      <div class="task-input">
+        <mat-form-field appearance="fill" class="task-input-field">
+          <mat-label>Nueva tarea...</mat-label>
+          <input matInput [(ngModel)]="newTaskTitle" />
+        </mat-form-field>
+        <button mat-icon-button (click)="addTask()">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Lista de tareas -->
+  <div class="task-list">
+    <div *ngFor="let task of tasks" [ngClass]="{ 'completed': task.completed }" class="task-item">
+      <mat-checkbox [checked]="task.completed" (change)="toggleCompletion(task)" color="primary"></mat-checkbox>
+
+      <!-- Si la tarea está en edición, mostrar el input -->
+      <span *ngIf="editingTaskId !== task._id" (dblclick)="startEditing(task)">
+        {{ task.title }}
+      </span>
+      <mat-form-field *ngIf="editingTaskId === task._id" appearance="fill">
+        <input
+          matInput
+          [(ngModel)]="editedTaskTitle"
+          (blur)="updateTaskTitle(task)"
+          (keyup.enter)="updateTaskTitle(task)"
+          (keyup.escape)="cancelEditing()"
+        />
+      </mat-form-field>
+
+      <button mat-icon-button (click)="deleteTask(task._id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
