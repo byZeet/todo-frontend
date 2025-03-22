@@ -9,9 +9,9 @@
       <div class="task-input">
         <mat-form-field appearance="fill" class="task-input-field">
           <mat-label>Nueva tarea...</mat-label>
-          <input matInput [(ngModel)]="newTaskTitle" />
+          <input matInput [(ngModel)]="newTaskTitle" (keyup.enter)="addTask()" />
         </mat-form-field>
-        <button mat-icon-button (click)="addTask()">
+        <button mat-icon-button (click)="addTask()" [disabled]="isAddingTask">
           <mat-icon>add_circle</mat-icon>
         </button>
       </div>
@@ -23,17 +23,19 @@
     <div *ngFor="let task of tasks" [ngClass]="{ 'completed': task.completed }" class="task-item">
       <mat-checkbox [checked]="task.completed" (change)="toggleCompletion(task)" color="primary"></mat-checkbox>
 
-      <!-- Si la tarea está en edición, mostrar el input -->
-      <span *ngIf="editingTaskId !== task._id" (dblclick)="startEditing(task)">
+      <!-- Edición en un solo clic -->
+      <span *ngIf="editingTaskId !== task._id" (click)="startEditing(task)">
         {{ task.title }}
       </span>
       <mat-form-field *ngIf="editingTaskId === task._id" appearance="fill">
         <input
           matInput
           [(ngModel)]="editedTaskTitle"
+          #editInput
           (blur)="updateTaskTitle(task)"
           (keyup.enter)="updateTaskTitle(task)"
           (keyup.escape)="cancelEditing()"
+          autofocus
         />
       </mat-form-field>
 

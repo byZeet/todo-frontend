@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -33,6 +33,9 @@ export class TaskListComponent implements OnInit {
   newTaskTitle: string = '';
   editingTaskId: string | null = null;
   editedTaskTitle: string = '';
+  isAddingTask: boolean = false;
+
+  @ViewChild('editInput') editInput!: ElementRef;
 
   constructor(private taskService: TaskService) {}
 
@@ -47,10 +50,13 @@ export class TaskListComponent implements OnInit {
   }
 
   addTask(): void {
-    if (!this.newTaskTitle.trim()) return;
+    if (!this.newTaskTitle.trim() || this.isAddingTask) return;
+
+    this.isAddingTask = true; // Evita tareas duplicadas
     this.taskService.addTask(this.newTaskTitle).subscribe((newTask) => {
       this.tasks.push(newTask);
       this.newTaskTitle = '';
+      this.isAddingTask = false; // Habilita el botón nuevamente
     });
   }
 
@@ -72,10 +78,18 @@ export class TaskListComponent implements OnInit {
   startEditing(task: Task): void {
     this.editingTaskId = task._id;
     this.editedTaskTitle = task.title;
+
+    setTimeout(() => {
+      this.editInput?.nativeElement.focus();
+    }, 0); // Enfoca el input automáticamente
   }
 
   updateTaskTitle(task: Task): void {
-    if (!this.editedTaskTitle.trim()) return;
+    if (!this.editedTaskTitle.trim()) {
+      this.cancelEditing();
+      return;
+    }
+
     this.taskService.editTaskTitle(task._id, this.editedTaskTitle).subscribe((updatedTask) => {
       const index = this.tasks.findIndex((t) => t._id === updatedTask._id);
       if (index !== -1) {
