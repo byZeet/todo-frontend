@@ -75,6 +75,23 @@ body.no-scroll {
   padding: 12px;
 }
 
+/* Hacer que la papelera se alinee a la derecha */
+.delete-btn {
+  margin-left: auto; 
+  cursor: pointer;
+  color: #ff66b2;
+  transition: color 0.3s;
+}
+
+.delete-btn:hover {
+  color: #ff4081;
+}
+
+/* Asegurar que el contenido de la tarea ocupe el espacio disponible */
+.task-content {
+  flex-grow: 1;
+}
+
 .task-content h4 {
   margin: 0;
   font-size: 16px;

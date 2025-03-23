@@ -42,14 +42,15 @@
           <h4>{{ task.title }}</h4>
           <p>{{ task.date | date: 'd MMM' }}</p>
         </div>
-
+    
+        <!-- Papelera alineada a la derecha -->
         <mat-icon 
           class="delete-btn" 
           (click)="deleteTask(task._id, $event)"
         >delete</mat-icon>
       </div>
     </div>
-  </div>
+    
 
   <!-- Formulario para añadir nueva tarea -->
   <div class="task-form" *ngIf="showTaskForm" [ngClass]="{ 'keyboard-open': isKeyboardOpen }">
