@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -35,7 +35,7 @@ export class TaskListComponent implements OnInit {
   newTaskTitle: string = '';
   isKeyboardOpen: boolean = false; // Detectar si el teclado está abierto en móvil
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService, private renderer: Renderer2) {}
 
   ngOnInit(): void {
     this.loadTasks();
@@ -79,11 +79,13 @@ export class TaskListComponent implements OnInit {
 
   openTaskForm(): void {
     this.showTaskForm = true;
+    this.renderer.addClass(document.body, 'no-scroll'); // Bloquea el scroll
   }
 
   closeTaskForm(): void {
     this.showTaskForm = false;
     this.newTaskTitle = '';
+    this.renderer.removeClass(document.body, 'no-scroll'); // Habilita el scroll
   }
 
   addTask(): void {
@@ -93,6 +95,7 @@ export class TaskListComponent implements OnInit {
       this.tasks.push(newTask);
       this.newTaskTitle = '';
       this.showTaskForm = false;
+      this.renderer.removeClass(document.body, 'no-scroll'); // Habilita el scroll
     });
   }
 

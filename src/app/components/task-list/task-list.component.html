@@ -1,30 +1,30 @@
 <div class="task-container">
   <!-- Encabezado -->
   <div class="header">
-    <h2>You have got {{ tasks.length }} tasks today to complete ✏️</h2>
+    <h2>Tienes {{ tasks.length }} tareas para completar hoy ✏️</h2>
   </div>
 
   <!-- Barra de búsqueda -->
   <mat-form-field class="search-bar">
     <mat-icon matPrefix>search</mat-icon>
-    <input matInput placeholder="Search Task Here" [(ngModel)]="searchTerm">
+    <input matInput placeholder="Buscar tarea aquí" [(ngModel)]="searchTerm">
   </mat-form-field>
 
   <!-- Sección de progreso -->
   <div class="progress-section">
-    <h3>Progress <span class="see-all">See All</span></h3>
+    <h3>Progreso <span class="see-all">Ver todo</span></h3>
     <div class="progress-card">
-      <p>Daily Task</p>
-      <p>{{ completedTasks }} / {{ tasks.length }} Task Completed</p>
+      <p>Tareas diarias</p>
+      <p>{{ completedTasks }} / {{ tasks.length }} tareas completadas</p>
       <mat-progress-bar mode="determinate" [value]="progressPercentage"></mat-progress-bar>
     </div>
   </div>
 
   <!-- Lista de tareas -->
   <div class="task-section">
-    <h3>Today's Task <span class="see-all">See All</span></h3>
+    <h3>Tareas de hoy <span class="see-all">Ver todo</span></h3>
     <div *ngIf="filteredTasks.length === 0" class="empty-state">
-      <p>No tasks found.</p>
+      <p>No se encontraron tareas.</p>
     </div>
 
     <div class="task-list">
@@ -51,23 +51,33 @@
     </div>
   </div>
 
-<!-- Formulario para añadir nueva tarea -->
-<div class="task-form" *ngIf="showTaskForm" [ngClass]="{ 'keyboard-open': isKeyboardOpen }">
-  <mat-card>
-    <mat-card-title>Add New Task</mat-card-title>
-    <mat-form-field>
-      <mat-label>Task Title</mat-label>
-      <input matInput [(ngModel)]="newTaskTitle">
-    </mat-form-field>
+  <!-- Formulario para añadir nueva tarea -->
+  <div class="task-form" *ngIf="showTaskForm" [ngClass]="{ 'keyboard-open': isKeyboardOpen }">
+    <mat-card class="task-form-card">
+      <!-- Input para nueva tarea -->
+      <mat-form-field class="task-input">
+        <mat-label>Ingrese una nueva tarea aquí</mat-label>
+        <input matInput [(ngModel)]="newTaskTitle">
+      </mat-form-field>
 
-    <div class="form-actions">
-      <button mat-button (click)="closeTaskForm()">Cancel</button>
-      <button mat-raised-button color="primary" (click)="addTask()">Add Task</button>
-    </div>
-  </mat-card>
+      <!-- Barra de opciones -->
+      <div class="task-options">
+        <button mat-button class="category-btn">Sin categoría</button>
+        <mat-icon>event</mat-icon>
+        <mat-icon>sync</mat-icon>
+        <mat-icon>task</mat-icon>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="form-actions">
+        <button mat-button (click)="closeTaskForm()">Cancelar</button>
+        <button mat-raised-button color="primary" (click)="addTask()">Agregar</button>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Botón flotante para añadir tarea -->
+  <button mat-fab class="add-task-btn" (click)="openTaskForm()">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>
-
-<!-- Botón flotante para añadir tarea -->
-<button mat-fab class="add-task-btn" (click)="openTaskForm()">
-  <mat-icon>add</mat-icon>
-</button>

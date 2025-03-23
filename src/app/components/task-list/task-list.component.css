@@ -1,33 +1,46 @@
-/* Contenedor principal */
+/* 📌 Contenedor principal */
 .task-container {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #1c1b29;
   color: white;
+  overflow: auto;
+  height: -webkit-fill-available;
+  
 }
 
-/* Encabezado */
+/* 📌 Bloquear scroll cuando el formulario está abierto */
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* 📌 Encabezado */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.profile-img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-
-/* Barra de búsqueda */
+/* 📌 Barra de búsqueda */
 .search-bar {
   width: 100%;
   margin: 16px 0;
 }
 
-/* Sección de progreso */
+.search-bar mat-form-field {
+  width: 100%;
+  background: #1f202c; /* Fondo oscuro */
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.search-bar input {
+  color: white;
+}
+
+/* 📌 Sección de progreso */
 .progress-section {
   margin-bottom: 16px;
 }
@@ -43,7 +56,7 @@
   color: #bbb;
 }
 
-/* Lista de tareas */
+/* 📌 Lista de tareas */
 .task-section {
   flex-grow: 1;
 }
@@ -62,13 +75,6 @@
   padding: 12px;
 }
 
-.task-category {
-  width: 8px;
-  height: 40px;
-  border-radius: 4px;
-  margin-right: 10px;
-}
-
 .task-content h4 {
   margin: 0;
   font-size: 16px;
@@ -80,42 +86,114 @@
   color: #bbb;
 }
 
-/* Formulario para añadir nueva tarea */
+/* 🎨 Formulario de nueva tarea */
 .task-form {
   position: fixed;
-  bottom: 80px; /* Mantenerlo encima del botón */
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  width: 90%;
-  max-width: 400px;
-  z-index: 1200; /* Más alto que el botón */
-  background: white;
+  width: 95%;
+  max-width: 500px;
+  z-index: 1200;
+  background: transparent;
+}
+
+/* 🎨 Tarjeta del formulario */
+.task-form-card {
+  background: #292a3a;
+  color: white;
   padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: bottom 0.3s ease-in-out, transform 0.3s ease-in-out;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Ajuste cuando el teclado esté abierto en móviles */
-.task-form.keyboard-open {
-  bottom: 50vh; /* Mover arriba cuando el teclado aparece */
-  transform: translate(-50%, -50%);
+/* 📌 Input para nueva tarea */
+.task-input {
+  width: 100%;
 }
 
-/* Botón flotante */
+.task-input mat-form-field {
+  width: 100%;
+  background: #1f202c; /* Fondo oscuro */
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.task-input input {
+  color: white;
+}
+
+.task-input mat-label {
+  color: #bbb;
+}
+
+/* 🎨 Barra inferior de opciones */
+.task-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1f202c;
+  padding: 10px;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+/* 📌 Botón de categoría */
+.category-btn {
+  color: #bbb;
+  font-size: 14px;
+}
+
+/* 📌 Iconos */
+.task-options mat-icon {
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* 📌 Botones de acción */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.form-actions button {
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+button[mat-button] {
+  color: #b0b0b0;
+}
+
+button[mat-button]:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+button[mat-raised-button][color="primary"] {
+  background-color: #ff66b2;
+  color: white;
+}
+
+button[mat-raised-button][color="primary"]:hover {
+  background-color: #ff4081;
+}
+
+/* 📌 Botón flotante */
 .add-task-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;
   background-color: #ff66b2;
-  z-index: 1100; /* Menor que el formulario */
+  z-index: 1100;
 }
 
 .add-task-btn:hover {
   background-color: #ff4081;
 }
 
-/* Ver todas las tareas */
+/* 📌 Ver todas las tareas */
 .see-all {
   float: right;
   color: #bbb;
@@ -123,7 +201,16 @@
   cursor: pointer;
 }
 
+/* 📌 Tareas completadas */
 .completed h4 {
   text-decoration: line-through;
   color: #888;
+}
+
+/* 📌 Bloquear scroll cuando hay pocas tareas en móviles */
+@media (max-width: 768px) {
+  .task-container {
+    min-height: calc(100vh - 100px); /* Ajuste para evitar scroll innecesario */
+    overflow-y: auto;
+  }
 }
