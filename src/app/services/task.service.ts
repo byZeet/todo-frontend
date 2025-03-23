@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class TaskService {
-  private apiUrl = `${environment.apiUrl}/tasks`;
+  private apiUrl = `${environment.apiUrl}/tasks`; // Asegúrate de que environment.apiUrl es correcto
 
   constructor(private http: HttpClient) {}
 
@@ -16,8 +16,8 @@ export class TaskService {
     return this.http.get<Task[]>(this.apiUrl);
   }
 
-  addTask(title: string): Observable<Task> {
-    return this.http.post<Task>(this.apiUrl, { title });
+  addTask(title: string, color?: string, date?: Date): Observable<Task> {
+    return this.http.post<Task>(this.apiUrl, { title, color, date });
   }
 
   deleteTask(id: string): Observable<void> {
@@ -30,5 +30,9 @@ export class TaskService {
 
   editTaskTitle(id: string, title: string): Observable<Task> {
     return this.http.patch<Task>(`${this.apiUrl}/${id}`, { title });
+  }
+
+  updateTask(task: Task): Observable<Task> {
+    return this.http.put<Task>(`${this.apiUrl}/${task._id}`, task);
   }
 }

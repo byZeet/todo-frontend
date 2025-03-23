@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -6,8 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
 
@@ -22,20 +22,18 @@ import { Task } from '../../models/task.model';
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatListModule,
     MatIconModule,
+    MatProgressBarModule,
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css'],
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
+  searchTerm: string = '';
+  showTaskForm: boolean = false;
   newTaskTitle: string = '';
-  editingTaskId: string | null = null;
-  editedTaskTitle: string = '';
-  isAddingTask: boolean = false;
-
-  @ViewChild('editInput') editInput!: ElementRef;
+  isKeyboardOpen: boolean = false; // Detectar si el teclado está abierto en móvil
 
   constructor(private taskService: TaskService) {}
 
@@ -44,62 +42,67 @@ export class TaskListComponent implements OnInit {
   }
 
   loadTasks(): void {
-    this.taskService.getTasks().subscribe((tasks) => {
+    this.taskService.getTasks().subscribe((tasks: Task[]) => {
       this.tasks = tasks;
     });
   }
 
-  addTask(): void {
-    if (!this.newTaskTitle.trim() || this.isAddingTask) return;
-
-    this.isAddingTask = true; // Evita tareas duplicadas
-    this.taskService.addTask(this.newTaskTitle).subscribe((newTask) => {
-      this.tasks.push(newTask);
-      this.newTaskTitle = '';
-      this.isAddingTask = false; // Habilita el botón nuevamente
-    });
+  get filteredTasks(): Task[] {
+    return this.tasks.filter((task) =>
+      task.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
   }
 
-  deleteTask(id: string): void {
+  get completedTasks(): number {
+    return this.tasks.filter((task) => task.completed).length;
+  }
+
+  get progressPercentage(): number {
+    return this.tasks.length === 0 ? 0 : Math.round((this.completedTasks / this.tasks.length) * 100);
+  }
+
+  deleteTask(id: string, event: Event): void {
+    event.stopPropagation();
     this.taskService.deleteTask(id).subscribe(() => {
       this.tasks = this.tasks.filter((task) => task._id !== id);
     });
   }
 
-  toggleCompletion(task: Task): void {
-    this.taskService.toggleTaskCompletion(task).subscribe((updatedTask) => {
-      const index = this.tasks.findIndex((t) => t._id === updatedTask._id);
-      if (index !== -1) {
-        this.tasks[index] = updatedTask;
-      }
+  toggleCompletion(task: Task, event: Event): void {
+    event.stopPropagation();
+    task.completed = !task.completed;
+  }
+
+  trackTask(index: number, task: Task): string {
+    return task._id;
+  }
+
+  openTaskForm(): void {
+    this.showTaskForm = true;
+  }
+
+  closeTaskForm(): void {
+    this.showTaskForm = false;
+    this.newTaskTitle = '';
+  }
+
+  addTask(): void {
+    if (!this.newTaskTitle.trim()) return;
+
+    this.taskService.addTask(this.newTaskTitle).subscribe((newTask: Task) => {
+      this.tasks.push(newTask);
+      this.newTaskTitle = '';
+      this.showTaskForm = false;
     });
   }
 
-  startEditing(task: Task): void {
-    this.editingTaskId = task._id;
-    this.editedTaskTitle = task.title;
+  // Detectar cambios en la pantalla para ver si el teclado está abierto
+  @HostListener('window:resize', [])
+  onResize() {
+    const screenHeight = window.innerHeight;
+    const viewportHeight = window.visualViewport?.height || screenHeight;
 
-    setTimeout(() => {
-      this.editInput?.nativeElement.focus();
-    }, 0); // Enfoca el input automáticamente
-  }
-
-  updateTaskTitle(task: Task): void {
-    if (!this.editedTaskTitle.trim()) {
-      this.cancelEditing();
-      return;
-    }
-
-    this.taskService.editTaskTitle(task._id, this.editedTaskTitle).subscribe((updatedTask) => {
-      const index = this.tasks.findIndex((t) => t._id === updatedTask._id);
-      if (index !== -1) {
-        this.tasks[index] = updatedTask;
-      }
-      this.editingTaskId = null;
-    });
-  }
-
-  cancelEditing(): void {
-    this.editingTaskId = null;
+    // Si la altura cambia significativamente, asumimos que el teclado está abierto
+    this.isKeyboardOpen = viewportHeight < screenHeight * 0.8;
   }
 }

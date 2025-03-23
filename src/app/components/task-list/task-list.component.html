@@ -1,47 +1,73 @@
 <div class="task-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>📌 Lista de Tareas</mat-card-title>
-    </mat-card-header>
+  <!-- Encabezado -->
+  <div class="header">
+    <h2>You have got {{ tasks.length }} tasks today to complete ✏️</h2>
+  </div>
 
-    <!-- Input para nueva tarea -->
-    <mat-card-content>
-      <div class="task-input">
-        <mat-form-field appearance="fill" class="task-input-field">
-          <mat-label>Nueva tarea...</mat-label>
-          <input matInput [(ngModel)]="newTaskTitle" (keyup.enter)="addTask()" />
-        </mat-form-field>
-        <button mat-icon-button (click)="addTask()" [disabled]="isAddingTask">
-          <mat-icon>add_circle</mat-icon>
-        </button>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <!-- Barra de búsqueda -->
+  <mat-form-field class="search-bar">
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput placeholder="Search Task Here" [(ngModel)]="searchTerm">
+  </mat-form-field>
 
-  <!-- Lista de tareas -->
-  <div class="task-list">
-    <div *ngFor="let task of tasks" [ngClass]="{ 'completed': task.completed }" class="task-item">
-      <mat-checkbox [checked]="task.completed" (change)="toggleCompletion(task)" color="primary"></mat-checkbox>
-
-      <!-- Edición en un solo clic -->
-      <span *ngIf="editingTaskId !== task._id" (click)="startEditing(task)">
-        {{ task.title }}
-      </span>
-      <mat-form-field *ngIf="editingTaskId === task._id" appearance="fill">
-        <input
-          matInput
-          [(ngModel)]="editedTaskTitle"
-          #editInput
-          (blur)="updateTaskTitle(task)"
-          (keyup.enter)="updateTaskTitle(task)"
-          (keyup.escape)="cancelEditing()"
-          autofocus
-        />
-      </mat-form-field>
-
-      <button mat-icon-button (click)="deleteTask(task._id)">
-        <mat-icon>delete</mat-icon>
-      </button>
+  <!-- Sección de progreso -->
+  <div class="progress-section">
+    <h3>Progress <span class="see-all">See All</span></h3>
+    <div class="progress-card">
+      <p>Daily Task</p>
+      <p>{{ completedTasks }} / {{ tasks.length }} Task Completed</p>
+      <mat-progress-bar mode="determinate" [value]="progressPercentage"></mat-progress-bar>
     </div>
   </div>
+
+  <!-- Lista de tareas -->
+  <div class="task-section">
+    <h3>Today's Task <span class="see-all">See All</span></h3>
+    <div *ngIf="filteredTasks.length === 0" class="empty-state">
+      <p>No tasks found.</p>
+    </div>
+
+    <div class="task-list">
+      <div 
+        *ngFor="let task of filteredTasks; trackBy: trackTask" 
+        class="task-item" 
+        [ngClass]="{ 'completed': task.completed }"
+      >
+        <mat-checkbox 
+          [checked]="task.completed" 
+          (click)="toggleCompletion(task, $event)"
+        ></mat-checkbox>
+        
+        <div class="task-content">
+          <h4>{{ task.title }}</h4>
+          <p>{{ task.date | date: 'd MMM' }}</p>
+        </div>
+
+        <mat-icon 
+          class="delete-btn" 
+          (click)="deleteTask(task._id, $event)"
+        >delete</mat-icon>
+      </div>
+    </div>
+  </div>
+
+<!-- Formulario para añadir nueva tarea -->
+<div class="task-form" *ngIf="showTaskForm" [ngClass]="{ 'keyboard-open': isKeyboardOpen }">
+  <mat-card>
+    <mat-card-title>Add New Task</mat-card-title>
+    <mat-form-field>
+      <mat-label>Task Title</mat-label>
+      <input matInput [(ngModel)]="newTaskTitle">
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button mat-button (click)="closeTaskForm()">Cancel</button>
+      <button mat-raised-button color="primary" (click)="addTask()">Add Task</button>
+    </div>
+  </mat-card>
 </div>
+
+<!-- Botón flotante para añadir tarea -->
+<button mat-fab class="add-task-btn" (click)="openTaskForm()">
+  <mat-icon>add</mat-icon>
+</button>

@@ -7,12 +7,13 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [TaskService], // Agregar aquí el servicio
+  providers: [TaskService], // Inyecta el servicio de tareas
   imports: [RouterOutlet] // Asegura la correcta importación del RouterOutlet
 })
 export class AppComponent implements OnInit {
+  title = 'todo-frontend';
+
   constructor(private taskService: TaskService) {}
-  title = 'todo-frontend';  // 👈 Agregado para evitar el error
 
   ngOnInit() {
     this.taskService.getTasks().subscribe(tasks => {

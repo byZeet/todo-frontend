@@ -1,98 +1,129 @@
+/* Contenedor principal */
 .task-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    max-width: 360px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .task-input {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  
-  .task-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .task-item {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background-color: #fff;
-    border-radius: 16px;
-    padding: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    cursor: pointer;
-  }
-  
-  .task-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .completed {
-    text-decoration: line-through;
-    color: #aaa;
-  }
-  
-  button {
-    margin-left: auto;
-  }
-  
-  mat-checkbox {
-    margin-right: 12px;
-  }
-  
-  mat-form-field {
-    flex: 1;
-  }
-  
-  mat-card {
-    margin-bottom: 16px;
-    background-color: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  mat-card-header {
-    background-color: #6200ea;
-    color: white;
-    border-radius: 16px 16px 0 0;
-    padding: 16px;
-  }
-  
-  mat-card-title {
-    font-weight: bold;
-    font-size: 18px;
-  }
-  
-  mat-form-field {
-    border-radius: 12px;
-    width: 100%;
-  }
-  
-  mat-icon {
-    font-size: 24px;
-    color: #6200ea;
-  }
-  
-  button mat-icon-button {
-    background-color: #e1bee7;
-    border-radius: 50%;
-    padding: 8px;
-  }
-  
-  button mat-icon-button:hover {
-    background-color: #ba68c8;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100vh;
+  background-color: #1c1b29;
+  color: white;
+}
+
+/* Encabezado */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+  width: 100%;
+  margin: 16px 0;
+}
+
+/* Sección de progreso */
+.progress-section {
+  margin-bottom: 16px;
+}
+
+.progress-card {
+  background: #292a3a;
+  padding: 12px;
+  border-radius: 16px;
+}
+
+.progress-hint {
+  font-size: 12px;
+  color: #bbb;
+}
+
+/* Lista de tareas */
+.task-section {
+  flex-grow: 1;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  background: #292a3a;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.task-category {
+  width: 8px;
+  height: 40px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.task-content h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.task-content p {
+  margin: 0;
+  font-size: 12px;
+  color: #bbb;
+}
+
+/* Formulario para añadir nueva tarea */
+.task-form {
+  position: fixed;
+  bottom: 80px; /* Mantenerlo encima del botón */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 400px;
+  z-index: 1200; /* Más alto que el botón */
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: bottom 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Ajuste cuando el teclado esté abierto en móviles */
+.task-form.keyboard-open {
+  bottom: 50vh; /* Mover arriba cuando el teclado aparece */
+  transform: translate(-50%, -50%);
+}
+
+/* Botón flotante */
+.add-task-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ff66b2;
+  z-index: 1100; /* Menor que el formulario */
+}
+
+.add-task-btn:hover {
+  background-color: #ff4081;
+}
+
+/* Ver todas las tareas */
+.see-all {
+  float: right;
+  color: #bbb;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.completed h4 {
+  text-decoration: line-through;
+  color: #888;
+}
