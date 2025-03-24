@@ -1,0 +1,43 @@
+<div class="create-task-container">
+    <!-- Flecha para volver atrás -->
+    <button class="back-button" (click)="goBack()">←</button>
+  
+    <div class="task-content">
+        <h2>Create new task</h2>
+  
+        <!-- 📅 Selección de fecha -->
+        <label>Task Date</label>
+        <input type="date" [(ngModel)]="selectedDate">
+  
+        <!-- 📌 Nombre de la tarea -->
+        <label>Schedule</label>
+        <input type="text" placeholder="Name" [(ngModel)]="title">
+  
+        <!-- ⏰ Selección de hora -->
+        <div class="time-section">
+            <div>
+                <label>Start Time</label>
+                <input type="time" [(ngModel)]="startTime">
+            </div>
+            <div>
+                <label>End Time</label>
+                <input type="time" [(ngModel)]="endTime">
+            </div>
+        </div>
+  
+        <!-- 🎨 Selección de color con vista previa -->
+        <label>Task Color</label>
+        <div class="color-selection">
+            <div *ngFor="let color of colorOptions" 
+                 class="color-box" 
+                 [ngStyle]="{'background': color}"
+                 [class.selected]="selectedColor === color"
+                 (click)="setColor(color)">
+            </div>
+        </div>
+  
+        <!-- ✅ Botón para crear la tarea -->
+        <button class="create-task-btn" (click)="addTask()">Create Task</button>
+    </div>
+  </div>
+  

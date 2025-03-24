@@ -1,41 +1,23 @@
 import { Component, OnInit, HostListener, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatIconModule,
-    MatProgressBarModule,
-  ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css'],
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
   searchTerm: string = '';
-  showTaskForm: boolean = false;
-  newTaskTitle: string = '';
-  isKeyboardOpen: boolean = false; // Detectar si el teclado está abierto en móvil
+  isKeyboardOpen: boolean = false;
 
-  constructor(private taskService: TaskService, private renderer: Renderer2) {}
+  constructor(private taskService: TaskService, private renderer: Renderer2, private router: Router) {}
 
   ngOnInit(): void {
     this.loadTasks();
@@ -68,44 +50,31 @@ export class TaskListComponent implements OnInit {
     });
   }
 
+  editTask(task: Task): void {
+    this.router.navigate(['/edit-task', task._id]);
+  }
+  
+
   toggleCompletion(task: Task, event: Event): void {
     event.stopPropagation();
-    task.completed = !task.completed;
+    this.taskService.toggleTaskCompletion(task).subscribe((updatedTask) => {
+      task.completed = updatedTask.completed;
+    });
   }
 
   trackTask(index: number, task: Task): string {
     return task._id;
   }
 
-  openTaskForm(): void {
-    this.showTaskForm = true;
-    this.renderer.addClass(document.body, 'no-scroll'); // Bloquea el scroll
+  // Redirigir a la página de creación de tarea
+  goToCreateTask(): void {
+    this.router.navigate(['/create-task']);
   }
 
-  closeTaskForm(): void {
-    this.showTaskForm = false;
-    this.newTaskTitle = '';
-    this.renderer.removeClass(document.body, 'no-scroll'); // Habilita el scroll
-  }
-
-  addTask(): void {
-    if (!this.newTaskTitle.trim()) return;
-
-    this.taskService.addTask(this.newTaskTitle).subscribe((newTask: Task) => {
-      this.tasks.push(newTask);
-      this.newTaskTitle = '';
-      this.showTaskForm = false;
-      this.renderer.removeClass(document.body, 'no-scroll'); // Habilita el scroll
-    });
-  }
-
-  // Detectar cambios en la pantalla para ver si el teclado está abierto
   @HostListener('window:resize', [])
   onResize() {
     const screenHeight = window.innerHeight;
     const viewportHeight = window.visualViewport?.height || screenHeight;
-
-    // Si la altura cambia significativamente, asumimos que el teclado está abierto
     this.isKeyboardOpen = viewportHeight < screenHeight * 0.8;
   }
 }

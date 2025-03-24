@@ -1,84 +1,42 @@
 <div class="task-container">
-  <!-- Encabezado -->
+  <!-- 📌 Encabezado -->
   <div class="header">
-    <h2>Tienes {{ tasks.length }} tareas para completar hoy ✏️</h2>
+    <h2><span class="task-count">{{ tasks.length }}</span> tareas para completar hoy ✏️</h2>
   </div>
 
-  <!-- Barra de búsqueda -->
-  <mat-form-field class="search-bar">
-    <mat-icon matPrefix>search</mat-icon>
-    <input matInput placeholder="Buscar tarea aquí" [(ngModel)]="searchTerm">
-  </mat-form-field>
+  <!-- 📌 Barra de búsqueda -->
+  <div class="search-bar">
+    <input type="text" placeholder="🔍 Search Task Here" [(ngModel)]="searchTerm">
+  </div>
 
-  <!-- Sección de progreso -->
+  <!-- 📌 Sección de progreso -->
   <div class="progress-section">
-    <h3>Progreso <span class="see-all">Ver todo</span></h3>
+    <h3>Progress <span class="see-all">See All</span></h3>
     <div class="progress-card">
-      <p>Tareas diarias</p>
-      <p>{{ completedTasks }} / {{ tasks.length }} tareas completadas</p>
-      <mat-progress-bar mode="determinate" [value]="progressPercentage"></mat-progress-bar>
+      <p class="progress-title">Daily Task</p>
+      <p class="progress-status">{{ completedTasks }}/{{ tasks.length }} Task Completed</p>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width]="progressPercentage + '%'"></div>
+      </div>
+      <p class="progress-percent">{{ progressPercentage }}%</p>
     </div>
   </div>
 
-  <!-- Lista de tareas -->
+  <!-- 📌 Lista de tareas -->
   <div class="task-section">
-    <h3>Tareas de hoy <span class="see-all">Ver todo</span></h3>
-    <div *ngIf="filteredTasks.length === 0" class="empty-state">
-      <p>No se encontraron tareas.</p>
-    </div>
-
+    <h3>Today's Task <span class="see-all">See All</span></h3>
     <div class="task-list">
-      <div 
-        *ngFor="let task of filteredTasks; trackBy: trackTask" 
-        class="task-item" 
-        [ngClass]="{ 'completed': task.completed }"
-      >
-        <mat-checkbox 
-          [checked]="task.completed" 
-          (click)="toggleCompletion(task, $event)"
-        ></mat-checkbox>
-        
-        <div class="task-content">
-          <h4>{{ task.title }}</h4>
-          <p>{{ task.date | date: 'd MMM' }}</p>
+      <div *ngFor="let task of filteredTasks; trackBy: trackTask" class="task-item">
+        <span class="task-color" [ngStyle]="{'background-color': task.color}"></span>
+        <div class="task-content" (click)="editTask(task)">
+          <h4 class="task-title">{{ task.title }}</h4>
+          <p>📅 {{ task.date | date:'dd MMM yyyy, HH:mm' }}</p>
         </div>
-    
-        <!-- Papelera alineada a la derecha -->
-        <mat-icon 
-          class="delete-btn" 
-          (click)="deleteTask(task._id, $event)"
-        >delete</mat-icon>
+        <div class="checkbox" [class.checked]="task.completed" (click)="toggleCompletion(task, $event)"></div>
       </div>
     </div>
-    
-
-  <!-- Formulario para añadir nueva tarea -->
-  <div class="task-form" *ngIf="showTaskForm" [ngClass]="{ 'keyboard-open': isKeyboardOpen }">
-    <mat-card class="task-form-card">
-      <!-- Input para nueva tarea -->
-      <mat-form-field class="task-input">
-        <mat-label>Ingrese una nueva tarea aquí</mat-label>
-        <input matInput [(ngModel)]="newTaskTitle">
-      </mat-form-field>
-
-      <!-- Barra de opciones -->
-      <div class="task-options">
-        <button mat-button class="category-btn">Sin categoría</button>
-        <mat-icon>event</mat-icon>
-        <mat-icon>sync</mat-icon>
-        <mat-icon>task</mat-icon>
-      </div>
-
-      <!-- Botones de acción -->
-      <div class="form-actions">
-        <button mat-button (click)="closeTaskForm()">Cancelar</button>
-        <button mat-raised-button color="primary" (click)="addTask()">Agregar</button>
-      </div>
-    </mat-card>
   </div>
 
-  <!-- Botón flotante para añadir tarea -->
-  <button mat-fab class="add-task-btn" (click)="openTaskForm()">
-    <mat-icon>add</mat-icon>
-  </button>
+  <!-- 📌 Botón flotante -->
+  <button class="add-task-btn" (click)="goToCreateTask()">+</button>
 </div>

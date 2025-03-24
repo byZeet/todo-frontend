@@ -1,0 +1,39 @@
+<div class="create-task-container">
+    <button class="back-button" (click)="goBack()">&#8592;</button>
+
+    <div class="task-content">
+        <h2>Editar Tarea</h2>
+
+        <label>Fecha de la tarea</label>
+        <input type="date" [(ngModel)]="selectedDate" class="task-input">
+
+        <label>Nombre</label>
+        <input type="text" placeholder="Escribe el nombre" [(ngModel)]="title" class="task-input">
+
+        <div class="time-section">
+            <div>
+                <label>Hora de inicio</label>
+                <input type="time" [(ngModel)]="startTime" class="task-input">
+            </div>
+            <div>
+                <label>Hora de finalización</label>
+                <input type="time" [(ngModel)]="endTime" class="task-input">
+            </div>
+        </div>
+
+        <label>Color de la tarea</label>
+        <div class="color-preview">
+            <div class="color-options">
+                <div *ngFor="let color of colorOptions" 
+                     class="color-box" 
+                     [style.background]="color"
+                     (click)="selectedColor = color"
+                     [class.selected]="selectedColor === color">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="create-task-btn" (click)="updateTask()">Actualizar Tarea</button>
+    <button class="delete-task-btn" (click)="deleteTask()">Eliminar Tarea</button>
+</div>

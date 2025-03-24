@@ -1,0 +1,118 @@
+/* Evita el scroll global */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Contenedor principal */
+.create-task-container {
+  background: #121212;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 🔥 Distribuye el contenido */
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Flecha de volver atrás */
+.back-button {
+  background: none;
+  color: white;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+  align-self: flex-start; /* 🔥 Coloca la flecha a la izquierda */
+}
+
+/* Sección principal con scroll si es necesario */
+.task-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* Entrada de texto y demás inputs */
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background: #1e1e1e;
+  color: white;
+}
+
+/* Sección de prioridad */
+.priority-section {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.priority-section button {
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  transition: 0.3s;
+}
+
+.priority-section button.selected {
+  background: purple;
+  color: white;
+}
+
+/* Vista previa del color seleccionado */
+.color-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-box {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* Botón "Create Task" fijado abajo */
+.create-task-btn {
+  background: linear-gradient(to right, #d16ba5, #86a8e7);
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  width: 100%;
+}
+
+
+.color-selection {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.color-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.color-box.selected {
+  border: 3px solid black;
+  transform: scale(1.1);
+}

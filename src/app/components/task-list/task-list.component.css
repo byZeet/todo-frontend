@@ -1,19 +1,7 @@
-/* 📌 Contenedor principal */
 .task-container {
-  display: flex;
-  flex-direction: column;
   padding: 20px;
   min-height: 100vh;
-  background-color: #1c1b29;
-  color: white;
-  overflow: auto;
-  height: -webkit-fill-available;
-  
-}
-
-/* 📌 Bloquear scroll cuando el formulario está abierto */
-body.no-scroll {
-  overflow: hidden;
+  background-color: #000000;
 }
 
 /* 📌 Encabezado */
@@ -21,23 +9,29 @@ body.no-scroll {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #fff;
 }
+
+.task-count {
+  font-weight: bold;
+  color: #ff66b2;
+}
+
 
 /* 📌 Barra de búsqueda */
 .search-bar {
-  width: 100%;
   margin: 16px 0;
-}
-
-.search-bar mat-form-field {
-  width: 100%;
-  background: #1f202c; /* Fondo oscuro */
-  border-radius: 8px;
-  padding: 8px;
+  background: #181818;
+  padding: 10px;
+  border-radius: 12px;
 }
 
 .search-bar input {
+  width: 100%;
+  border: none;
+  background: transparent;
   color: white;
+  font-size: 16px;
 }
 
 /* 📌 Sección de progreso */
@@ -46,19 +40,54 @@ body.no-scroll {
 }
 
 .progress-card {
-  background: #292a3a;
-  padding: 12px;
+  background: #181818;
+  padding: 16px;
   border-radius: 16px;
+  position: relative;
 }
 
-.progress-hint {
+.progress-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffff;
+}
+
+.progress-status {
   font-size: 12px;
   color: #bbb;
 }
 
+.progress-info {
+  font-size: 12px;
+  color: #666;
+}
+
+.progress-bar {
+  height: 6px;
+  background: #333;
+  border-radius: 4px;
+  margin-top: 6px;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #ff66b2;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-percent {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  font-size: 14px;
+  color: #fff;
+}
+
 /* 📌 Lista de tareas */
 .task-section {
-  flex-grow: 1;
+  margin-top: 16px;
 }
 
 .task-list {
@@ -70,26 +99,51 @@ body.no-scroll {
 .task-item {
   display: flex;
   align-items: center;
-  background: #292a3a;
+  background: #181818;
+  color: #fff;
   border-radius: 12px;
   padding: 12px;
+  position: relative;
 }
 
-/* Hacer que la papelera se alinee a la derecha */
+.checked {
+  animation: completeTask 0.3s ease-in-out;
+}
+
+@keyframes completeTask {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
 .delete-btn {
-  margin-left: auto; 
+  background: none;
+  border: none;
   cursor: pointer;
-  color: #ff66b2;
-  transition: color 0.3s;
+  font-size: 1.2em;
+  color: red;
 }
 
-.delete-btn:hover {
-  color: #ff4081;
+
+.task-color {
+  width: 8px;
+  height: 100%;
+  border-radius: 4px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
 }
 
-/* Asegurar que el contenido de la tarea ocupe el espacio disponible */
+
+.task-color-orange { background: #ff9f43; }
+.task-color-blue { background: #4b7bec; }
+.task-color-pink { background: #fc5c65; }
+.task-color-purple { background: #a55eea; }
+
 .task-content {
   flex-grow: 1;
+  padding-left: 16px;
 }
 
 .task-content h4 {
@@ -103,98 +157,27 @@ body.no-scroll {
   color: #bbb;
 }
 
-/* 🎨 Formulario de nueva tarea */
-.task-form {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95%;
-  max-width: 500px;
-  z-index: 1200;
-  background: transparent;
-}
-
-/* 🎨 Tarjeta del formulario */
-.task-form-card {
-  background: #292a3a;
-  color: white;
-  padding: 15px;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-
-/* 📌 Input para nueva tarea */
-.task-input {
-  width: 100%;
-}
-
-.task-input mat-form-field {
-  width: 100%;
-  background: #1f202c; /* Fondo oscuro */
-  border-radius: 8px;
-  padding: 8px;
-}
-
-.task-input input {
-  color: white;
-}
-
-.task-input mat-label {
-  color: #bbb;
-}
-
-/* 🎨 Barra inferior de opciones */
-.task-options {
+/* 📌 Checkbox personalizado */
+.checkbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background: #1f202c;
-  padding: 10px;
-  border-radius: 12px;
-  margin-top: 10px;
+  justify-content: center;
 }
 
-/* 📌 Botón de categoría */
-.category-btn {
-  color: #bbb;
+.checkbox.checked {
+  background: #ff66b2;
+  border-color: #ff66b2;
+}
+
+.checkbox.checked::after {
+  content: '✔';
+  color: white;
   font-size: 14px;
-}
-
-/* 📌 Iconos */
-.task-options mat-icon {
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-/* 📌 Botones de acción */
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-}
-
-.form-actions button {
-  font-weight: bold;
-  border-radius: 8px;
-}
-
-button[mat-button] {
-  color: #b0b0b0;
-}
-
-button[mat-button]:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-button[mat-raised-button][color="primary"] {
-  background-color: #ff66b2;
-  color: white;
-}
-
-button[mat-raised-button][color="primary"]:hover {
-  background-color: #ff4081;
 }
 
 /* 📌 Botón flotante */
@@ -203,7 +186,17 @@ button[mat-raised-button][color="primary"]:hover {
   bottom: 20px;
   right: 20px;
   background-color: #ff66b2;
-  z-index: 1100;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .add-task-btn:hover {
@@ -218,16 +211,3 @@ button[mat-raised-button][color="primary"]:hover {
   cursor: pointer;
 }
 
-/* 📌 Tareas completadas */
-.completed h4 {
-  text-decoration: line-through;
-  color: #888;
-}
-
-/* 📌 Bloquear scroll cuando hay pocas tareas en móviles */
-@media (max-width: 768px) {
-  .task-container {
-    min-height: calc(100vh - 100px); /* Ajuste para evitar scroll innecesario */
-    overflow-y: auto;
-  }
-}
